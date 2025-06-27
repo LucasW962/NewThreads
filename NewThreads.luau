@@ -276,17 +276,14 @@ function Threads.Resume(self: ThreadType): (boolean, string?)
 end
 
 function Threads.Wait(self: ThreadType): (any?, any?) --// USED TO PAUSE THE THREAD
-	while self.active do
-		task.wait()
-	end
+	while self.active do coroutine.yield() end
 	return self.result, self.error
 end
 
 function Threads.CheckPause(self: ThreadType, args: any?) --// WAITS WHILE THE THREAD IS PAUSED
-	while self.paused do
-		task.wait(0.1)
-	end
+	while self.paused do coroutine.yield() end
 end
+
 
 function Threads.GetActive(): { [number]: ThreadType } --// HELPER FUNCTION TO RETURN ALL ACTIVE THREADS
 	return ActiveThreads
